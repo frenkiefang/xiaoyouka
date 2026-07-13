@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我的 - 江苏大学校园卡</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #000;
+        }
+
+        .page {
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 20px 16px 100px;
+        }
+
+        .header {
+            background-color: #f1f1f1;
+            padding: 18px 16px;
+            text-align: center;
+            border-radius: 14px;
+        }
+
+        .header .brand {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .header .meta {
+            font-size: 12px;
+            color: #888;
+        }
+
+        .card {
+            position: relative;
+            overflow: hidden;
+            min-height: 260px;
+            margin: 20px 0;
+            border-radius: 14px;
+            padding: 18px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            color: #000;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            background: url('image.png') center bottom/cover no-repeat;
+        }
+
+        .avatar {
+            width: 110px;
+            height: 110px;
+            margin: 0;
+            border-radius: 16px;
+            object-fit: cover;
+            flex-shrink: 0;
+        }
+
+        .info {
+            text-align: left;
+            margin: 0 0 0 16px;
+            line-height: 1.8;
+            color: #000;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            gap: 8px;
+        }
+
+        .info .tiny {
+            font-size: 13px;
+        }
+
+        .info .name {
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .info .row {
+            font-size: 13px;
+            margin: 0;
+        }
+
+        .balance-section {
+            display: flex;
+            justify-content: space-between;
+            background-color: #fff;
+            padding: 10px 20px;
+            border-radius: 8px;
+            margin: 20px 20px 0;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .balance-item {
+            text-align: center;
+        }
+
+        .balance-item .label {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .balance-item .value {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .menu {
+            margin: 20px 20px 0;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .menu-item {
+            display: block;
+            text-decoration: none;
+            color: #000;
+            padding: 12px 20px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .menu-item:last-child {
+            border-bottom: none;
+        }
+
+        .menu-item:hover {
+            background-color: #f0f0f0;
+        }
+
+        .menu-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .menu-icon {
+            font-size: 18px;
+        }
+
+        .menu-arrow {
+            float: right;
+            color: #999;
+        }
+
+        .footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: #fff;
+            border-top: 1px solid #ddd;
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0;
+            box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-item {
+            text-align: center;
+            text-decoration: none;
+            color: #999;
+            font-size: 12px;
+        }
+
+        .nav-item img {
+            width: 24px;
+            height: 24px;
+            display: block;
+            margin: 0 auto 5px;
+        }
+
+        .nav-item span {
+            display: block;
+        }
+
+        .nav-item.active {
+            color: #1f6fe2;
+        }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <div class="header">
+            <div class="brand">我的</div>
+            <div class="meta">ykt.ujs.edu.cn</div>
+        </div>
+
+        <div class="card">
+            <img class="avatar" src="image2.png" alt="头像">
+            <div class="info">
+                <div class="tiny">学工号: 8000029952</div>
+                <div class="name">刘畅</div>
+                <div class="row">部门: 校友</div>
+                <div class="row">身份: 校友</div>
+            </div>
+        </div>
+
+        <div class="balance-section">
+        <div class="balance-item">
+            <div class="value">370.00元</div>
+            <div class="label">账户余额</div>
+        </div>
+        <div class="balance-item">
+            <div class="value">370.00元</div>
+            <div class="label">总资产</div>
+        </div>
+    </div>
+
+    <div class="menu">
+        <a class="menu-item" href="#">账单</a>
+        <a class="menu-item" href="#">帮助中心</a>
+        <a class="menu-item" href="#">商户中心</a>
+        <a class="menu-item" href="#">设置</a>
+    </div>
+    </div>
+
+    <div class="footer">
+        <a class="nav-item" href="#">
+            <img src="https://ykt.ujs.edu.cn/minio/theme/9ce22fe770761de78d762c6f8242650b_h5/images/plat/white/shouyeUser.png" alt="首页">
+            <span>首页</span>
+        </a>
+        <a class="nav-item" href="#">
+            <img src="https://ykt.ujs.edu.cn/minio/theme/9ce22fe770761de78d762c6f8242650b_h5/images/plat/white/dating.png" alt="大厅">
+            <span>大厅</span>
+        </a>
+        <a class="nav-item" href="#">
+            <img src="https://ykt.ujs.edu.cn/minio/theme/9ce22fe770761de78d762c6f8242650b_h5/images/plat/white/dongtai.png" alt="动态">
+            <span>动态</span>
+        </a>
+        <a class="nav-item active" href="#">
+            <img src="https://ykt.ujs.edu.cn/minio/theme/9ce22fe770761de78d762c6f8242650b_h5/images/plat/checked/wode.png" alt="我的">
+            <span>我的</span>
+        </a>
+    </div>
+</body>
+</html>
