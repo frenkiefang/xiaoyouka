@@ -32,74 +32,22 @@
             min-height: 100vh;
         }
 
-        /* Responsive Mobile Container representing the Web Page */
+        /* Native Scrolling Mobile Web Page Container */
         .app-container {
             width: 100%;
             max-width: 480px;
-            height: 100vh;
-            height: 100dvh;
+            min-height: 100vh;
             background-color: var(--bg-color);
             background-image: url("user_bg.png");
             background-repeat: no-repeat;
-            background-position: 0px -1.5rem;
+            background-position: 0px 0px;
             background-size: 100% auto;
             position: relative;
             display: flex;
             flex-direction: column;
             box-shadow: 0 0 16px rgba(0, 0, 0, 0.04);
-            overflow: hidden;
-        }
-
-        /* WebView Native-like Header */
-        .webview-header {
-            background-color: #ffffff;
-            height: 48px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 16px;
-            position: relative;
-            z-index: 100;
-            flex-shrink: 0;
-        }
-
-        .header-btn {
-            width: 32px;
-            height: 32px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-        }
-
-        .header-title-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-        }
-
-        .header-title {
-            font-size: 16.5px;
-            font-weight: 600;
-            color: var(--text-color);
-            line-height: 1.2;
-        }
-
-        .header-subtitle {
-            font-size: 10.5px;
-            color: var(--text-muted);
-            margin-top: 1px;
-            font-weight: normal;
-        }
-
-        /* Scrollable Page Body */
-        .scroll-content {
-            flex: 1;
-            overflow-y: auto;
-            padding-bottom: 24px;
-            -webkit-overflow-scrolling: touch;
+            /* Leave space at the bottom so the last menu item can be fully scrolled up above the fixed tabbar */
+            padding-bottom: calc(50px + env(safe-area-inset-bottom) + 16px);
         }
 
         /* Card Section */
@@ -283,17 +231,21 @@
             margin-right: 4px;
         }
 
-        /* Footer TabBar */
+        /* Footer TabBar - Fixed at the very bottom of the screen viewport */
         .tabbar {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
             width: 100%;
+            max-width: 480px;
             height: 50px;
             background-color: #ffffff;
             border-top: 1px solid #ebedf0;
             display: flex;
-            z-index: 100;
+            z-index: 1000;
             box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.02);
             padding-bottom: env(safe-area-inset-bottom);
-            flex-shrink: 0;
         }
 
         .tabbar-item {
@@ -331,100 +283,74 @@
 <body>
 
     <div class="app-container">
-        <!-- WebView Native-like Header -->
-        <header class="webview-header">
-            <div class="header-btn" title="关闭">
-                <!-- Close X Icon -->
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <line x1="18" y1="6" x2="6" y2="18"></line>
-                    <line x1="6" y1="6" x2="18" y2="18"></line>
-                </svg>
+        <!-- 1. Campus Card -->
+        <section class="card-section">
+            <div class="card-wrapper">
+                <img class="card-bg" src="card_bg.png" alt="Card Background">
+                <img class="card-avatar" src="avatar.png" alt="Avatar">
+                
+                <span class="card-label label-id">学工号：</span>
+                <span class="card-value value-id">3180501113</span>
+                
+                <span class="card-label label-name">姓 名：</span>
+                <span class="card-value value-name">刘畅</span>
+                
+                <span class="card-label label-role">身 份：</span>
+                <span class="card-value value-role">校友</span>
             </div>
-            <div class="header-title-container">
-                <h1 class="header-title">我的</h1>
-                <span class="header-subtitle">ykt.ujs.edu.cn</span>
-            </div>
-            <div class="header-btn" title="更多">
-                <!-- More Dot Icon -->
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-                    <circle cx="5" cy="12" r="2" fill="currentColor" />
-                    <circle cx="12" cy="12" r="2" fill="currentColor" />
-                    <circle cx="19" cy="12" r="2" fill="currentColor" />
-                </svg>
-            </div>
-        </header>
+        </section>
 
-        <!-- Scrollable Content Screen -->
-        <main class="scroll-content">
-            <!-- 1. Campus Card -->
-            <section class="card-section">
-                <div class="card-wrapper">
-                    <img class="card-bg" src="card_bg.png" alt="Card Background">
-                    <img class="card-avatar" src="avatar.png" alt="Avatar">
-                    
-                    <span class="card-label label-id">学工号：</span>
-                    <span class="card-value value-id">3180501113</span>
-                    
-                    <span class="card-label label-name">姓 名：</span>
-                    <span class="card-value value-name">刘畅</span>
-                    
-                    <span class="card-label label-role">身 份：</span>
-                    <span class="card-value value-role">校友</span>
-                </div>
-            </section>
-
-            <!-- 2. Balance Block -->
-            <section class="balance-section">
-                <div class="balance-card">
-                    <div class="balance-item">
-                        <div class="balance-value-row">
-                            <span class="balance-num">6.60</span>
-                            <span class="balance-unit">元</span>
-                        </div>
-                        <span class="balance-label">账户余额</span>
+        <!-- 2. Balance Block -->
+        <section class="balance-section">
+            <div class="balance-card">
+                <div class="balance-item">
+                    <div class="balance-value-row">
+                        <span class="balance-num">6.60</span>
+                        <span class="balance-unit">元</span>
                     </div>
-                    <div class="balance-item">
-                        <div class="balance-value-row">
-                            <span class="balance-num">6.60</span>
-                            <span class="balance-unit">元</span>
-                        </div>
-                        <span class="balance-label">总资产</span>
+                    <span class="balance-label">账户余额</span>
+                </div>
+                <div class="balance-item">
+                    <div class="balance-value-row">
+                        <span class="balance-num">6.60</span>
+                        <span class="balance-unit">元</span>
                     </div>
+                    <span class="balance-label">总资产</span>
                 </div>
-            </section>
+            </div>
+        </section>
 
-            <!-- 3. Navigation List (Cell Group) -->
-            <section class="menu-section">
-                <div class="menu-group">
-                    <a href="#" class="menu-item">
-                        <div class="menu-left">
-                            <img class="menu-icon" src="bill.png" alt="账单 Icon">
-                            <span class="menu-title">账单</span>
-                        </div>
-                        <div class="menu-arrow"></div>
-                    </a>
-                    
-                    <a href="#" class="menu-item">
-                        <div class="menu-left">
-                            <img class="menu-icon" src="help-center.png" alt="帮助中心 Icon">
-                            <span class="menu-title">帮助中心</span>
-                        </div>
-                        <div class="menu-arrow"></div>
-                    </a>
-                    
-                    <a href="#" class="menu-item">
-                        <div class="menu-left">
-                            <!-- Premium Inline SVG Setting Gear icon (sky blue color) -->
-                            <svg class="menu-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M19.43 12.98C19.47 12.66 19.5 12.34 19.5 12C19.5 11.66 19.47 11.34 19.43 11.02L21.54 9.37C21.73 9.22 21.78 8.95 21.66 8.73L19.66 5.27C19.54 5.05 19.27 4.97 19.05 5.05L16.56 6.05C16.04 5.65 15.48 5.32 14.87 5.07L14.49 2.42C14.46 2.18 14.25 2 14 2H10C9.75 2 9.54 2.18 9.51 2.42L9.13 5.07C8.52 5.32 7.96 5.66 7.44 6.05L4.95 5.05C4.73 4.96 4.46 5.05 4.34 5.27L2.34 8.73C2.21 8.95 2.27 9.22 2.46 9.37L4.57 11.02C4.53 11.34 4.5 11.67 4.5 12C4.5 12.33 4.53 12.66 4.57 12.98L2.46 14.63C2.27 14.78 2.22 15.05 2.34 15.27L4.34 18.73C4.46 18.95 4.73 19.03 4.95 18.95L7.44 17.95C7.96 18.35 8.52 18.68 9.13 18.93L9.51 21.58C9.54 21.82 9.75 22 10 22H14C14.25 22 14.46 21.82 14.49 21.58L14.87 18.93C15.48 18.68 16.04 18.34 16.56 17.95L19.05 18.95C19.27 19.04 19.54 18.95 19.66 18.73L21.66 15.27C21.78 15.05 21.73 14.78 21.54 14.63L19.43 12.98ZM12 15.5C10.07 15.5 8.5 13.93 8.5 12C8.5 10.07 10.07 8.5 12 8.5C13.93 8.5 15.5 10.07 15.5 12C15.5 13.93 13.93 15.5 12 15.5Z" fill="#43b2fd"/>
-                            </svg>
-                            <span class="menu-title">设置</span>
-                        </div>
-                        <div class="menu-arrow"></div>
-                    </a>
-                </div>
-            </section>
-        </main>
+        <!-- 3. Navigation List (Cell Group) -->
+        <section class="menu-section">
+            <div class="menu-group">
+                <a href="#" class="menu-item">
+                    <div class="menu-left">
+                        <img class="menu-icon" src="bill.png" alt="账单 Icon">
+                        <span class="menu-title">账单</span>
+                    </div>
+                    <div class="menu-arrow"></div>
+                </a>
+                
+                <a href="#" class="menu-item">
+                    <div class="menu-left">
+                        <img class="menu-icon" src="help-center.png" alt="帮助中心 Icon">
+                        <span class="menu-title">帮助中心</span>
+                    </div>
+                    <div class="menu-arrow"></div>
+                </a>
+                
+                <a href="#" class="menu-item">
+                    <div class="menu-left">
+                        <!-- Premium Inline SVG Setting Gear icon (sky blue color) -->
+                        <svg class="menu-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M19.43 12.98C19.47 12.66 19.5 12.34 19.5 12C19.5 11.66 19.47 11.34 19.43 11.02L21.54 9.37C21.73 9.22 21.78 8.95 21.66 8.73L19.66 5.27C19.54 5.05 19.27 4.97 19.05 5.05L16.56 6.05C16.04 5.65 15.48 5.32 14.87 5.07L14.49 2.42C14.46 2.18 14.25 2 14 2H10C9.75 2 9.54 2.18 9.51 2.42L9.13 5.07C8.52 5.32 7.96 5.66 7.44 6.05L4.95 5.05C4.73 4.96 4.46 5.05 4.34 5.27L2.34 8.73C2.21 8.95 2.27 9.22 2.46 9.37L4.57 11.02C4.53 11.34 4.5 11.67 4.5 12C4.5 12.33 4.53 12.66 4.57 12.98L2.46 14.63C2.27 14.78 2.22 15.05 2.34 15.27L4.34 18.73C4.46 18.95 4.73 19.03 4.95 18.95L7.44 17.95C7.96 18.35 8.52 18.68 9.13 18.93L9.51 21.58C9.54 21.82 9.75 22 10 22H14C14.25 22 14.46 21.82 14.49 21.58L14.87 18.93C15.48 18.68 16.04 18.34 16.56 17.95L19.05 18.95C19.27 19.04 19.54 18.95 19.66 18.73L21.66 15.27C21.78 15.05 21.73 14.78 21.54 14.63L19.43 12.98ZM12 15.5C10.07 15.5 8.5 13.93 8.5 12C8.5 10.07 10.07 8.5 12 8.5C13.93 8.5 15.5 10.07 15.5 12C15.5 13.93 13.93 15.5 12 15.5Z" fill="#43b2fd"/>
+                        </svg>
+                        <span class="menu-title">设置</span>
+                    </div>
+                    <div class="menu-arrow"></div>
+                </a>
+            </div>
+        </section>
 
         <!-- 4. Fixed Tabbar navigation -->
         <nav class="tabbar">
