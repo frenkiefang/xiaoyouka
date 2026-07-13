@@ -2,246 +2,449 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>我的 - 江苏大学校园卡</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>我的</title>
     <style>
+        :root {
+            --primary-color: #feaa33; /* Theme active color */
+            --bg-color: #f7f8fa;
+            --text-color: #1d1d1d;
+            --text-secondary: #646566;
+            --text-muted: #969799;
+            --border-color: #ebedf0;
+        }
+
         * {
             box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
             margin: 0;
-            min-height: 100vh;
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            color: #000;
-        }
-
-        .page {
-            max-width: 500px;
-            margin: 0 auto;
-            padding: 20px 16px 100px;
-        }
-
-        .header {
-            background-color: #f1f1f1;
-            padding: 18px 16px;
-            text-align: center;
-            border-radius: 14px;
-        }
-
-        .header .brand {
-            font-size: 24px;
-            font-weight: 700;
-            margin-bottom: 4px;
-        }
-
-        .header .meta {
-            font-size: 12px;
-            color: #888;
-        }
-
-        .card {
-            position: relative;
-            overflow: hidden;
-            min-height: 260px;
-            margin: 20px 0;
-            border-radius: 14px;
-            padding: 18px;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", Helvetica, Arial, "PingFang SC", "miui", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+            color: var(--text-color);
+            background-color: #f4f6fa;
             display: flex;
-            justify-content: space-between;
-            align-items: flex-end;
-            color: #000;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-            background: url('image.png') center bottom/cover no-repeat;
+            justify-content: center;
+            min-height: 100vh;
         }
 
-        .avatar {
-            width: 110px;
-            height: 110px;
-            margin: 0;
-            border-radius: 16px;
-            object-fit: cover;
+        /* Responsive Mobile Container representing the Web Page */
+        .app-container {
+            width: 100%;
+            max-width: 480px;
+            min-height: 100vh;
+            background-color: var(--bg-color);
+            background-image: url("user_bg.png");
+            background-repeat: no-repeat;
+            background-position: 0px -1.5rem;
+            background-size: 100% auto;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 0 16px rgba(0, 0, 0, 0.04);
+        }
+
+        /* WebView Native-like Header */
+        .webview-header {
+            background-color: #ffffff;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 16px;
+            position: relative;
+            z-index: 100;
             flex-shrink: 0;
         }
 
-        .info {
-            text-align: left;
-            margin: 0 0 0 16px;
-            line-height: 1.8;
-            color: #000;
+        .header-btn {
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .header-title-container {
             display: flex;
             flex-direction: column;
-            justify-content: flex-end;
-            gap: 8px;
-        }
-
-        .info .tiny {
-            font-size: 13px;
-        }
-
-        .info .name {
-            font-size: 18px;
-            font-weight: 700;
-        }
-
-        .info .row {
-            font-size: 13px;
-            margin: 0;
-        }
-
-        .balance-section {
-            display: flex;
-            justify-content: space-between;
-            background-color: #fff;
-            padding: 10px 20px;
-            border-radius: 8px;
-            margin: 20px 20px 0;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        }
-
-        .balance-item {
+            align-items: center;
+            justify-content: center;
             text-align: center;
         }
 
-        .balance-item .label {
-            font-size: 14px;
-            color: #666;
+        .header-title {
+            font-size: 16.5px;
+            font-weight: 600;
+            color: var(--text-color);
+            line-height: 1.2;
         }
 
-        .balance-item .value {
-            font-size: 20px;
-            font-weight: 700;
+        .header-subtitle {
+            font-size: 10.5px;
+            color: var(--text-muted);
+            margin-top: 1px;
+            font-weight: normal;
+        }
+
+        /* Scrollable Page Body */
+        .scroll-content {
+            flex: 1;
+            padding-bottom: 64px; /* Space for the bottom tabbar navigation */
+            -webkit-overflow-scrolling: touch;
+        }
+
+        /* Card Section */
+        .card-section {
+            padding: 0 14px;
+            margin-top: 20px;
+        }
+
+        .card-wrapper {
+            position: relative;
+            width: 100%;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
+        }
+
+        .card-bg {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .card-avatar {
+            position: absolute;
+            top: 33.07%;
+            left: 9%;
+            width: 25%;
+            height: auto;
+            border-radius: 4px;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+            object-fit: cover;
+        }
+
+        .card-label {
+            position: absolute;
+            font-size: 14px;
+            font-weight: 600;
+            color: #000000;
+            white-space: nowrap;
+            pointer-events: none;
+        }
+
+        .card-value {
+            position: absolute;
+            font-size: 14px;
+            font-weight: 600;
+            color: #000000;
+            white-space: nowrap;
+            pointer-events: none;
+        }
+
+        .label-id { top: 38.58%; left: 41%; }
+        .value-id { top: 38.58%; left: 55%; }
+
+        .label-name { top: 55.12%; left: 43%; }
+        .value-name { top: 55.12%; left: 55%; }
+
+        .label-role { top: 72.44%; left: 43%; }
+        .value-role { top: 72.44%; left: 55%; }
+
+        /* Balance Grid (6.60 block) */
+        .balance-section {
+            padding: 0 14px;
+            margin-top: 12px;
+        }
+
+        .balance-card {
+            background-color: #ffffff;
+            border-radius: 12px;
+            display: flex;
+            padding: 18px 0;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.02);
+        }
+
+        .balance-item {
+            flex: 1;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+        }
+
+        /* Divider between balances */
+        .balance-item:first-child::after {
+            content: "";
+            position: absolute;
+            right: 0;
+            top: 20%;
+            height: 60%;
+            width: 1px;
+            background-color: #ebedf0;
+        }
+
+        .balance-value-row {
+            display: flex;
+            align-items: baseline;
+            justify-content: center;
             margin-bottom: 4px;
         }
 
-        .menu {
-            margin: 20px 20px 0;
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        .balance-num {
+            font-size: 19px;
+            font-weight: bold;
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", Arial, sans-serif;
+            color: var(--text-color);
+        }
+
+        .balance-unit {
+            font-size: 12px;
+            color: var(--text-color);
+            margin-left: 2px;
+        }
+
+        .balance-label {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        /* Menu Rows (Cell Group) */
+        .menu-section {
+            padding: 0 14px;
+            margin-top: 12px;
+        }
+
+        .menu-group {
+            background-color: #ffffff;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.02);
+            display: flex;
+            flex-direction: column;
         }
 
         .menu-item {
-            display: block;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 52px;
+            padding: 0 16px;
+            border-bottom: 0.5px solid #f7f8fa;
             text-decoration: none;
-            color: #000;
-            padding: 12px 20px;
-            border-bottom: 1px solid #ddd;
+            color: var(--text-color);
+            background-color: #ffffff;
+            transition: background-color 0.15s ease;
         }
 
         .menu-item:last-child {
             border-bottom: none;
         }
 
-        .menu-item:hover {
-            background-color: #f0f0f0;
+        .menu-item:active {
+            background-color: #f2f3f5;
         }
 
         .menu-left {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
         }
 
         .menu-icon {
-            font-size: 18px;
+            width: 20px;
+            height: 20px;
+            object-fit: contain;
+            display: block;
+        }
+
+        .menu-title {
+            font-size: 15.5px;
+            font-weight: normal;
+            color: var(--text-color);
         }
 
         .menu-arrow {
-            float: right;
-            color: #999;
+            width: 8px;
+            height: 8px;
+            border-top: 1.5px solid #c8c9cc;
+            border-right: 1.5px solid #c8c9cc;
+            transform: rotate(45deg);
+            margin-right: 4px;
         }
 
-        .footer {
-            position: fixed;
+        /* Footer TabBar */
+        .tabbar {
+            position: absolute;
             bottom: 0;
             left: 0;
-            right: 0;
-            background-color: #fff;
-            border-top: 1px solid #ddd;
+            width: 100%;
+            height: 50px;
+            background-color: #ffffff;
+            border-top: 1px solid #ebedf0;
             display: flex;
-            justify-content: space-around;
-            padding: 10px 0;
-            box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+            z-index: 100;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.02);
+            padding-bottom: env(safe-area-inset-bottom);
         }
 
-        .nav-item {
-            text-align: center;
+        .tabbar-item {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
             text-decoration: none;
-            color: #999;
-            font-size: 12px;
+            color: #1d1d1d;
+            font-size: 11px;
+            outline: none;
         }
 
-        .nav-item img {
-            width: 24px;
-            height: 24px;
-            display: block;
-            margin: 0 auto 5px;
-        }
-
-        .nav-item span {
+        .tabbar-icon {
+            width: 22px;
+            height: 22px;
+            object-fit: contain;
+            margin-bottom: 2px;
             display: block;
         }
 
-        .nav-item.active {
-            color: #1f6fe2;
+        .tabbar-text {
+            line-height: 1;
+            font-size: 11px;
+            color: #1d1d1d;
+        }
+
+        /* Active Tab style (warning color in theme is rgb(254, 170, 51)) */
+        .tabbar-item.active .tabbar-text {
+            color: rgb(254, 170, 51);
         }
     </style>
 </head>
 <body>
-    <div class="page">
-        <div class="header">
-            <div class="brand">我的</div>
-            <div class="meta">ykt.ujs.edu.cn</div>
-        </div>
 
-        <div class="card">
-            <img class="avatar" src="image2.png" alt="头像">
-            <div class="info">
-                <div class="tiny">学工号: 8000029952</div>
-                <div class="name">刘畅</div>
-                <div class="row">部门: 校友</div>
-                <div class="row">身份: 校友</div>
+    <div class="app-container">
+        <!-- WebView Native-like Header -->
+        <header class="webview-header">
+            <div class="header-btn" title="关闭">
+                <!-- Close X Icon -->
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
             </div>
-        </div>
+            <div class="header-title-container">
+                <h1 class="header-title">我的</h1>
+                <span class="header-subtitle">ykt.ujs.edu.cn</span>
+            </div>
+            <div class="header-btn" title="更多">
+                <!-- More Dot Icon -->
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                    <circle cx="5" cy="12" r="2" fill="currentColor" />
+                    <circle cx="12" cy="12" r="2" fill="currentColor" />
+                    <circle cx="19" cy="12" r="2" fill="currentColor" />
+                </svg>
+            </div>
+        </header>
 
-        <div class="balance-section">
-        <div class="balance-item">
-            <div class="value">370.00元</div>
-            <div class="label">账户余额</div>
-        </div>
-        <div class="balance-item">
-            <div class="value">370.00元</div>
-            <div class="label">总资产</div>
-        </div>
+        <!-- Scrollable Content Screen -->
+        <main class="scroll-content">
+            <!-- 1. Campus Card -->
+            <section class="card-section">
+                <div class="card-wrapper">
+                    <img class="card-bg" src="card_bg.png" alt="Card Background">
+                    <img class="card-avatar" src="avatar.png" alt="Avatar">
+                    
+                    <span class="card-label label-id">学工号：</span>
+                    <span class="card-value value-id">3180501113</span>
+                    
+                    <span class="card-label label-name">姓 名：</span>
+                    <span class="card-value value-name">方显辰</span>
+                    
+                    <span class="card-label label-role">身 份：</span>
+                    <span class="card-value value-role">校友</span>
+                </div>
+            </section>
+
+            <!-- 2. Balance Block -->
+            <section class="balance-section">
+                <div class="balance-card">
+                    <div class="balance-item">
+                        <div class="balance-value-row">
+                            <span class="balance-num">6.60</span>
+                            <span class="balance-unit">元</span>
+                        </div>
+                        <span class="balance-label">账户余额</span>
+                    </div>
+                    <div class="balance-item">
+                        <div class="balance-value-row">
+                            <span class="balance-num">6.60</span>
+                            <span class="balance-unit">元</span>
+                        </div>
+                        <span class="balance-label">总资产</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 3. Navigation List (Cell Group) -->
+            <section class="menu-section">
+                <div class="menu-group">
+                    <a href="#" class="menu-item">
+                        <div class="menu-left">
+                            <img class="menu-icon" src="bill.png" alt="账单 Icon">
+                            <span class="menu-title">账单</span>
+                        </div>
+                        <div class="menu-arrow"></div>
+                    </a>
+                    
+                    <a href="#" class="menu-item">
+                        <div class="menu-left">
+                            <img class="menu-icon" src="help-center.png" alt="帮助中心 Icon">
+                            <span class="menu-title">帮助中心</span>
+                        </div>
+                        <div class="menu-arrow"></div>
+                    </a>
+                    
+                    <a href="#" class="menu-item">
+                        <div class="menu-left">
+                            <!-- Premium Inline SVG Setting Gear icon (sky blue color) -->
+                            <svg class="menu-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M19.43 12.98C19.47 12.66 19.5 12.34 19.5 12C19.5 11.66 19.47 11.34 19.43 11.02L21.54 9.37C21.73 9.22 21.78 8.95 21.66 8.73L19.66 5.27C19.54 5.05 19.27 4.97 19.05 5.05L16.56 6.05C16.04 5.65 15.48 5.32 14.87 5.07L14.49 2.42C14.46 2.18 14.25 2 14 2H10C9.75 2 9.54 2.18 9.51 2.42L9.13 5.07C8.52 5.32 7.96 5.66 7.44 6.05L4.95 5.05C4.73 4.96 4.46 5.05 4.34 5.27L2.34 8.73C2.21 8.95 2.27 9.22 2.46 9.37L4.57 11.02C4.53 11.34 4.5 11.67 4.5 12C4.5 12.33 4.53 12.66 4.57 12.98L2.46 14.63C2.27 14.78 2.22 15.05 2.34 15.27L4.34 18.73C4.46 18.95 4.73 19.03 4.95 18.95L7.44 17.95C7.96 18.35 8.52 18.68 9.13 18.93L9.51 21.58C9.54 21.82 9.75 22 10 22H14C14.25 22 14.46 21.82 14.49 21.58L14.87 18.93C15.48 18.68 16.04 18.34 16.56 17.95L19.05 18.95C19.27 19.04 19.54 18.95 19.66 18.73L21.66 15.27C21.78 15.05 21.73 14.78 21.54 14.63L19.43 12.98ZM12 15.5C10.07 15.5 8.5 13.93 8.5 12C8.5 10.07 10.07 8.5 12 8.5C13.93 8.5 15.5 10.07 15.5 12C15.5 13.93 13.93 15.5 12 15.5Z" fill="#43b2fd"/>
+                            </svg>
+                            <span class="menu-title">设置</span>
+                        </div>
+                        <div class="menu-arrow"></div>
+                    </a>
+                </div>
+            </section>
+        </main>
+
+        <!-- 4. Fixed Tabbar navigation -->
+        <nav class="tabbar">
+            <a href="#" class="tabbar-item">
+                <img class="tabbar-icon" src="shouyeUser.png" alt="首页 Icon">
+                <span class="tabbar-text">首页</span>
+            </a>
+            <a href="#" class="tabbar-item">
+                <img class="tabbar-icon" src="dating.png" alt="大厅 Icon">
+                <span class="tabbar-text">大厅</span>
+            </a>
+            <a href="#" class="tabbar-item">
+                <img class="tabbar-icon" src="dongtai.png" alt="动态 Icon">
+                <span class="tabbar-text">动态</span>
+            </a>
+            <a href="#" class="tabbar-item active">
+                <img class="tabbar-icon" src="wode.png" alt="我的 Icon">
+                <span class="tabbar-text">我的</span>
+            </a>
+        </nav>
     </div>
 
-    <div class="menu">
-        <a class="menu-item" href="#">账单</a>
-        <a class="menu-item" href="#">帮助中心</a>
-        <a class="menu-item" href="#">商户中心</a>
-        <a class="menu-item" href="#">设置</a>
-    </div>
-    </div>
-
-    <div class="footer">
-        <a class="nav-item" href="#">
-            <img src="https://ykt.ujs.edu.cn/minio/theme/9ce22fe770761de78d762c6f8242650b_h5/images/plat/white/shouyeUser.png" alt="首页">
-            <span>首页</span>
-        </a>
-        <a class="nav-item" href="#">
-            <img src="https://ykt.ujs.edu.cn/minio/theme/9ce22fe770761de78d762c6f8242650b_h5/images/plat/white/dating.png" alt="大厅">
-            <span>大厅</span>
-        </a>
-        <a class="nav-item" href="#">
-            <img src="https://ykt.ujs.edu.cn/minio/theme/9ce22fe770761de78d762c6f8242650b_h5/images/plat/white/dongtai.png" alt="动态">
-            <span>动态</span>
-        </a>
-        <a class="nav-item active" href="#">
-            <img src="https://ykt.ujs.edu.cn/minio/theme/9ce22fe770761de78d762c6f8242650b_h5/images/plat/checked/wode.png" alt="我的">
-            <span>我的</span>
-        </a>
-    </div>
 </body>
 </html>
