@@ -1,0 +1,4 @@
+[functions.record-name-visit]
+# This endpoint is called by visitors who are not signed in. The function itself
+# validates requests and is the only component allowed to write to name_visits.
+verify_jwt = false
