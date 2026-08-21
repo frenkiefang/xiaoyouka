@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Visit Dashboard</title>
+    <style>
+        :root {
+            --bg: #f7f8fa;
+            --text: #16181f;
+            --muted: #6c7280;
+            --border: #e7eaf0;
+            --accent: #feaa33;
+            --accent-soft: rgba(254, 170, 51, 0.14);
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", Helvetica, Arial, "PingFang SC", "Microsoft YaHei", sans-serif;
+            color: var(--text);
+            background:
+                radial-gradient(circle at top left, rgba(254, 170, 51, 0.18), transparent 28%),
+                radial-gradient(circle at top right, rgba(67, 178, 253, 0.12), transparent 24%),
+                linear-gradient(180deg, #fffdf8 0%, #f7f8fa 42%, #eef3fb 100%);
+            min-height: 100vh;
+        }
+
+        .shell {
+            max-width: 980px;
+            margin: 0 auto;
+            padding: 28px 16px 40px;
+        }
+
+        .card {
+            border: 1px solid rgba(255, 255, 255, 0.78);
+            border-radius: 22px;
+            overflow: hidden;
+            background: rgba(255, 255, 255, 0.88);
+            box-shadow: 0 14px 36px rgba(36, 41, 54, 0.08);
+            backdrop-filter: blur(10px);
+        }
+
+        .hero {
+            padding: 26px 22px 18px;
+            border-bottom: 1px solid #eef0f4;
+            background: linear-gradient(135deg, rgba(254, 170, 51, 0.12), rgba(255, 255, 255, 0));
+        }
+
+        .kicker {
+            display: inline-flex;
+            align-items: center;
+            padding: 7px 12px;
+            border-radius: 999px;
+            background: var(--accent-soft);
+            color: #9c5f00;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+        }
+
+        h1 {
+            margin: 14px 0 0;
+            font-size: clamp(28px, 4vw, 40px);
+            line-height: 1.1;
+            letter-spacing: -0.03em;
+        }
+
+        .sub {
+            margin: 10px 0 0;
+            max-width: 64ch;
+            color: var(--muted);
+            font-size: 14px;
+            line-height: 1.65;
+        }
+
+        .meta {
+            margin-top: 14px;
+            color: #8a90a0;
+            font-size: 12px;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 12px;
+            padding: 18px 22px 4px;
+        }
+
+        .stat {
+            padding: 16px 14px;
+            border-radius: 16px;
+            background: #fff;
+            border: 1px solid #eef0f4;
+            box-shadow: 0 8px 22px rgba(34, 41, 55, 0.04);
+        }
+
+        .label {
+            display: block;
+            margin-bottom: 10px;
+            color: #8a90a0;
+            font-size: 12px;
+        }
+
+        .value {
+            font-size: 24px;
+            font-weight: 800;
+            letter-spacing: -0.03em;
+        }
+
+        .section {
+            padding: 18px 22px 24px;
+        }
+
+        .head {
+            display: flex;
+            justify-content: space-between;
+            align-items: end;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .title {
+            font-size: 18px;
+            font-weight: 800;
+        }
+
+        .count {
+            color: #8a90a0;
+            font-size: 12px;
+        }
+
+        .pill {
+            display: inline-flex;
+            align-items: center;
+            padding: 5px 10px;
+            border-radius: 999px;
+            background: var(--accent-soft);
+            color: #9c5f00;
+            font-weight: 700;
+            font-size: 12px;
+        }
+
+        .actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .refresh {
+            appearance: none;
+            border: 0;
+            border-radius: 999px;
+            padding: 7px 12px;
+            background: #16181f;
+            color: #fff;
+            cursor: pointer;
+            font: inherit;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .refresh:disabled {
+            cursor: wait;
+            opacity: 0.55;
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            border-radius: 16px;
+            overflow: hidden;
+            background: #fff;
+            border: 1px solid #eef0f4;
+        }
+
+        .table th,
+        .table td {
+            padding: 14px 12px;
+            border-bottom: 1px solid #f2f3f5;
+            text-align: left;
+            vertical-align: top;
+            font-size: 13px;
+        }
+
+        .table th {
+            color: #5f6573;
+            font-weight: 700;
+            background: #fbfcfe;
+        }
+
+        .table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .empty {
+            padding: 24px;
+            border-radius: 16px;
+            background: #fff;
+            border: 1px dashed #dfe3ea;
+            color: #8a90a0;
+            font-size: 14px;
+        }
+
+        .error {
+            margin-bottom: 12px;
+            padding: 12px 14px;
+            border: 1px solid #ffd2c8;
+            border-radius: 14px;
+            background: #fff4f1;
+            color: #a63820;
+            font-size: 13px;
+        }
+
+        code {
+            font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+            font-size: 12px;
+        }
+
+        @media (max-width: 720px) {
+            .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+            .head { align-items: flex-start; flex-direction: column; }
+            .table th:nth-child(3),
+            .table td:nth-child(3) { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <main class="shell">
+        <section class="card">
+            <header class="hero">
+                <div class="kicker">Supabase Visit Dashboard</div>
+                <h1>name_visits 数据看板</h1>
+                <p class="sub">实时展示 `public.name_visits` 的数据条目、汇总统计和最近记录。</p>
+                <div class="meta" id="meta">加载中...</div>
+            </header>
+
+            <section class="stats" aria-label="统计概览">
+                <div class="stat"><span class="label">总访问数</span><div class="value" id="total">-</div></div>
+                <div class="stat"><span class="label">去重访客</span><div class="value" id="visitors">-</div></div>
+                <div class="stat"><span class="label">去重姓名</span><div class="value" id="names">-</div></div>
+                <div class="stat"><span class="label">最近 24 小时</span><div class="value" id="last24">-</div></div>
+            </section>
+
+            <section class="section">
+                <div class="head">
+                    <div>
+                        <div class="title">访问条目</div>
+                        <div class="count" id="count">-</div>
+                    </div>
+                    <div class="actions">
+                        <div class="pill">实时数据</div>
+                        <button class="refresh" id="refresh" type="button">刷新</button>
+                    </div>
+                </div>
+                <div id="error" class="error" role="alert" hidden></div>
+                <div id="empty" class="empty" hidden>暂无访问记录。</div>
+                <table class="table" id="table" aria-label="访问记录表">
+                    <thead>
+                        <tr>
+                            <th>姓名</th>
+                            <th>页面</th>
+                            <th>访客 ID</th>
+                            <th>访问时间</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbody"></tbody>
+                </table>
+            </section>
+        </section>
+    </main>
+
+    <script>
+        (function () {
+            var SUPABASE_URL = "https://bpippqhzpfmdcuwfswfr.supabase.co";
+            var SUPABASE_PUBLISHABLE_KEY = "sb_publishable_Q2SQy1RS8vk5ek-rZJTCkA_qFcp1kl3";
+            var PAGE_SIZE = 1000;
+            var tbody = document.getElementById('tbody');
+            var table = document.getElementById('table');
+            var empty = document.getElementById('empty');
+            var error = document.getElementById('error');
+            var refresh = document.getElementById('refresh');
+
+            refresh.addEventListener('click', loadVisits);
+            loadVisits();
+
+            async function loadVisits() {
+                refresh.disabled = true;
+                error.hidden = true;
+                setText('meta', '正在从 Supabase 加载...');
+
+                try {
+                    var visits = await fetchAllVisits();
+                    render(visits);
+                } catch (loadError) {
+                    console.error('Unable to load visits', loadError);
+                    error.textContent = '加载失败，请稍后重试。';
+                    error.hidden = false;
+                    setText('meta', '数据加载失败');
+                } finally {
+                    refresh.disabled = false;
+                }
+            }
+
+            async function fetchAllVisits() {
+                var rows = [];
+                var offset = 0;
+
+                while (true) {
+                    var query = new URLSearchParams({
+                        select: 'name,page_path,visitor_id,visited_at',
+                        order: 'visited_at.desc',
+                        limit: String(PAGE_SIZE),
+                        offset: String(offset)
+                    });
+                    var response = await fetch(SUPABASE_URL + '/rest/v1/name_visits?' + query, {
+                        headers: { apikey: SUPABASE_PUBLISHABLE_KEY }
+                    });
+
+                    if (!response.ok) {
+                        throw new Error('Supabase returned HTTP ' + response.status);
+                    }
+
+                    var page = await response.json();
+                    rows = rows.concat(page);
+                    if (page.length < PAGE_SIZE) break;
+                    offset += PAGE_SIZE;
+                }
+
+                return rows;
+            }
+
+            function render(visits) {
+                var visitors = new Set();
+                var names = new Set();
+                var cutoff = Date.now() - 24 * 60 * 60 * 1000;
+                var visitsLast24h = 0;
+
+                visits.forEach(function (row) {
+                    visitors.add(row.visitor_id);
+                    names.add(row.name);
+                    if (parseShanghaiTime(row.visited_at).getTime() >= cutoff) visitsLast24h += 1;
+                });
+
+                setText('total', visits.length);
+                setText('visitors', visitors.size);
+                setText('names', names.size);
+                setText('last24', visitsLast24h);
+                setText('meta', '更新时间：' + formatTime(new Date()) + '（Asia/Shanghai）');
+                setText('count', '共 ' + visits.length + ' 条记录');
+
+                table.hidden = visits.length === 0;
+                empty.hidden = visits.length !== 0;
+                tbody.innerHTML = visits.map(function (row) {
+                    return [
+                        '<tr>',
+                        '<td><strong>' + escapeHtml(row.name) + '</strong></td>',
+                        '<td>' + escapeHtml(row.page_path) + '</td>',
+                        '<td><code>' + escapeHtml(row.visitor_id) + '</code></td>',
+                        '<td>' + escapeHtml(formatTime(parseShanghaiTime(row.visited_at))) + '</td>',
+                        '</tr>'
+                    ].join('');
+                }).join('');
+            }
+
+            function parseShanghaiTime(value) {
+                var normalized = String(value).trim().replace(' ', 'T');
+                if (!/(Z|[+-]\\d{2}:?\\d{2})$/.test(normalized)) {
+                    normalized = normalized.replace(/(\\.\\d{3})\\d+$/, '$1') + '+08:00';
+                }
+                return new Date(normalized);
+            }
+
+            function formatTime(value) {
+                return new Intl.DateTimeFormat('zh-CN', {
+                    timeZone: 'Asia/Shanghai',
+                    year: 'numeric',
+                    month: '2-digit',
+                    day: '2-digit',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit',
+                    hour12: false
+                }).format(value);
+            }
+
+            function setText(id, value) {
+                var el = document.getElementById(id);
+                if (el) el.textContent = String(value);
+            }
+
+            function escapeHtml(value) {
+                return String(value)
+                    .replace(/&/g, '&amp;')
+                    .replace(/</g, '&lt;')
+                    .replace(/>/g, '&gt;')
+                    .replace(/"/g, '&quot;')
+                    .replace(/'/g, '&#39;');
+            }
+        })();
+    </script>
+</body>
+</html>
