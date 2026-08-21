@@ -278,6 +278,111 @@
         .tabbar-item.active .tabbar-text {
             color: rgb(254, 170, 51);
         }
+
+        .welcome-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 1200;
+            display: grid;
+            place-items: center;
+            padding: 24px;
+            background: rgba(28, 33, 47, 0.34);
+            backdrop-filter: blur(3px);
+            opacity: 0;
+            transition: opacity 180ms ease;
+        }
+
+        .welcome-overlay[hidden] { display: none; }
+        .welcome-overlay.is-visible { opacity: 1; }
+
+        .welcome-dialog {
+            position: relative;
+            width: min(78vw, 300px);
+            min-height: 272px;
+            padding: 38px 26px 26px;
+            border-radius: 26px;
+            overflow: hidden;
+            color: #61350b;
+            text-align: center;
+            background: linear-gradient(145deg, #fff8df 0%, #ffe4a8 100%);
+            box-shadow: 0 18px 45px rgba(72, 42, 7, 0.28);
+            transform: translateY(12px) scale(0.92) rotate(-2deg);
+            transition: transform 230ms cubic-bezier(.2, .85, .3, 1.2);
+        }
+
+        .welcome-overlay.is-visible .welcome-dialog { transform: translateY(0) scale(1) rotate(0); }
+
+        .welcome-dialog::before,
+        .welcome-dialog::after {
+            position: absolute;
+            border-radius: 50%;
+            content: '';
+            pointer-events: none;
+        }
+
+        .welcome-dialog::before {
+            width: 150px;
+            height: 150px;
+            top: -82px;
+            right: -72px;
+            background: rgba(255, 255, 255, 0.48);
+        }
+
+        .welcome-dialog::after {
+            width: 78px;
+            height: 78px;
+            bottom: -42px;
+            left: -20px;
+            background: rgba(253, 170, 51, 0.24);
+        }
+
+        .welcome-close {
+            position: absolute;
+            top: 12px;
+            right: 13px;
+            z-index: 1;
+            width: 32px;
+            height: 32px;
+            border: 0;
+            border-radius: 50%;
+            color: #8c5d1f;
+            font-size: 22px;
+            line-height: 1;
+            background: rgba(255, 255, 255, 0.58);
+            cursor: pointer;
+        }
+
+        .welcome-emoji {
+            display: block;
+            width: 208px;
+            height: 164px;
+            margin: 0 auto 12px;
+            object-fit: contain;
+            filter: drop-shadow(0 6px 4px rgba(151, 91, 7, 0.16));
+        }
+
+        .welcome-message {
+            position: relative;
+            z-index: 1;
+            margin: 0;
+            font-size: 24px;
+            font-weight: 800;
+            letter-spacing: 0.02em;
+            line-height: 1.4;
+        }
+
+        .welcome-hint {
+            position: relative;
+            z-index: 1;
+            margin: 8px 0 0;
+            color: #9b6a29;
+            font-size: 13px;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .welcome-overlay,
+            .welcome-dialog { transition: none; }
+        }
     </style>
 </head>
 <body>
@@ -373,6 +478,15 @@
         </nav>
     </div>
 
+    <div class="welcome-overlay" id="welcome-overlay" role="presentation" hidden>
+        <section class="welcome-dialog" role="dialog" aria-modal="true" aria-labelledby="welcome-message">
+            <button class="welcome-close" type="button" aria-label="关闭提示" data-close-welcome>&times;</button>
+            <img class="welcome-emoji" src="img_v3_0214p_faa1dc5b-4fba-4bf1-a88d-88538e88b29g.jpg" alt="逮到你了的俏皮表情">
+            <p class="welcome-message" id="welcome-message">又来偷偷踢球了？</p>
+            <p class="welcome-hint">小心被我逮个正着～</p>
+        </section>
+    </div>
+
     <script src="tracking-config.js"></script>
     <script>
         (function() {
@@ -451,6 +565,46 @@
                 } catch (e) {
                     // Logging failure must never block page rendering
                 }
+            }
+
+            var welcomeOverlay = document.getElementById('welcome-overlay');
+            var welcomeClose = document.querySelector('[data-close-welcome]');
+
+            function isWelcomeTime() {
+                var parts = new Intl.DateTimeFormat('en-GB', {
+                    timeZone: 'Asia/Shanghai',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    hourCycle: 'h23'
+                }).formatToParts(new Date());
+                var hour = Number(parts.filter(function(part) { return part.type === 'hour'; })[0].value);
+                var minute = Number(parts.filter(function(part) { return part.type === 'minute'; })[0].value);
+                var totalMinutes = hour * 60 + minute;
+                return totalMinutes >= 17 * 60 && totalMinutes < 19 * 60 + 30;
+            }
+
+            function closeWelcomeDialog() {
+                if (!welcomeOverlay) return;
+                welcomeOverlay.classList.remove('is-visible');
+                window.setTimeout(function() {
+                    welcomeOverlay.hidden = true;
+                }, 180);
+            }
+
+            if (welcomeOverlay && isWelcomeTime()) {
+                welcomeOverlay.hidden = false;
+                window.requestAnimationFrame(function() {
+                    welcomeOverlay.classList.add('is-visible');
+                    if (welcomeClose) welcomeClose.focus();
+                });
+
+                if (welcomeClose) welcomeClose.addEventListener('click', closeWelcomeDialog);
+                welcomeOverlay.addEventListener('click', function(event) {
+                    if (event.target === welcomeOverlay) closeWelcomeDialog();
+                });
+                document.addEventListener('keydown', function(event) {
+                    if (event.key === 'Escape' && !welcomeOverlay.hidden) closeWelcomeDialog();
+                });
             }
         })();
     </script>
